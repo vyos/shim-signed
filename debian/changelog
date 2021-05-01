@@ -1,13 +1,12 @@
-shim-signed (1.34) UNRELEASED; urgency=medium
+shim-signed (1.34~1+deb10u1) UNRELEASED; urgency=medium
 
-  * Build against new signed binaries corresponding to 15.4-2
-    Closes: #971129
+  * Buster update: build against new signed binaries corresponding to
+    15.4-2~deb10u1
   * ***WARNING***: arm64 shim is no longer signed, due to major
     toolchain problems. See
     https://wiki.debian.org/SecureBoot#arm64_problems for more
     information. Separated out the binary package for arm64 to allow
     for a different description, and tweaked the Makefile too.
-  * Update build-deps and Standards-Version
   * Tweak Makefile setup - do our verification testing chained from
     the "all" target, not "clean". Closes: #936002
   * Don't include apport stuff in the Debian build, it's not useful.
@@ -15,7 +14,7 @@ shim-signed (1.34) UNRELEASED; urgency=medium
   * Add Spanish translation for debconf templates, thanks to
     Camaleón. Closes: #987339
 
- -- Steve McIntyre <93sam@debian.org>  Thu, 29 Apr 2021 22:04:33 +0100
+ -- Steve McIntyre <93sam@debian.org>  Sat, 01 May 2021 13:15:14 +0100
 
 shim-signed (1.33) unstable; urgency=medium
 

@@ -3,13 +3,13 @@ Section: utils
 Priority: optional
 Maintainer: Debian EFI Team <debian-efi@lists.debian.org>
 Uploaders: Steve McIntyre <93sam@debian.org>, Steve Langasek <vorlon@debian.org>
-Build-Depends: debhelper (>= 13),
- shim-unsigned (= 15.4-2),
+Build-Depends: debhelper (>= 9),
+ shim-unsigned (= 15.4-2~deb10u1),
 # sbsigntool before 0.9.2-2 had a horrid bug with checksum calculation
 # which broke our build
  sbsigntool (>= 0.9.2-2),
  po-debconf
-Standards-Version: 4.5.1
+Standards-Version: 4.3.0
 Vcs-Browser: https://salsa.debian.org/efi-team/shim-signed
 Vcs-Git: https://salsa.debian.org/efi-team/shim-signed.git
 
@@ -18,12 +18,12 @@ Architecture: amd64 i386 arm64
 Multi-Arch: same
 Depends: ${misc:Depends},
  grub-efi-amd64-bin [amd64],
- shim-helpers-amd64-signed (>= 1+15.4+2) [amd64],
+ shim-helpers-amd64-signed (>= 1+15.4+2~deb10u1) [amd64],
  grub-efi-ia32-bin [i386],
- shim-helpers-i386-signed (>= 1+15.4+2) [i386],
+ shim-helpers-i386-signed (>= 1+15.4+2~deb10u1) [i386],
  grub-efi-arm64-bin [arm64],
- shim-helpers-iarm64-signed (>= 1+15.4+2) [arm64],
- grub2-common (>= 2.02+dfsg1-16)
+ shim-helpers-iarm64-signed (>= 1+15.4+2~deb10u1) [arm64],
+ grub2-common (>= 2.02+dfsg1-20+deb10u4)
 Recommends: secureboot-db
 Built-Using: shim (= ${shim:Version})
 Description: Secure Boot chain-loading bootloader (Microsoft-signed binary)
