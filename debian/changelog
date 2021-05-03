@@ -3,8 +3,7 @@ shim-signed (1.34~1+deb10u1) UNRELEASED; urgency=medium
   * Buster update: build against new signed binaries corresponding to
     15.4-2~deb10u1
   * ***WARNING***: arm64 shim is no longer signed, due to major
-    toolchain problems. See
-    https://wiki.debian.org/SecureBoot#arm64_problems for more
+    toolchain problems. See NEWS.Debian for more
     information. Separated out the binary package for arm64 to allow
     for a different description, and tweaked the Makefile too.
   * Tweak Makefile setup - do our verification testing chained from
