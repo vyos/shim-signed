@@ -13,6 +13,17 @@ shim-signed (1.34~1+deb10u1) UNRELEASED; urgency=medium
   * Tweak dh_install* usage for docs.
   * Add Spanish translation for debconf templates, thanks to
     Camaleón. Closes: #987339
+  * Multiple bugfixes in postinst and postrm handling:
+    + Call grub-install using the correct grub target in postinst
+    + Also call grub-install using the correct grub target in the
+      postrm, and clean up the shim binary from the ESP
+    + In each case, also check and use the correct configured options
+      for grub-install
+    + Move the postinst grub-install code from the -common package to
+      the arch-specific packages, to make sure it's always called when
+      needed.
+    + Only run grub-install etc. if we're actually on an EFI-booted
+      system.
 
  -- Steve McIntyre <93sam@debian.org>  Sat, 01 May 2021 13:15:14 +0100
 
