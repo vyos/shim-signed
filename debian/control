@@ -22,7 +22,7 @@ Depends: ${misc:Depends},
  grub-efi-ia32-bin [i386],
  shim-helpers-i386-signed (>= 1+15.4+2~deb10u1) [i386],
  grub-efi-arm64-bin [arm64],
- shim-helpers-iarm64-signed (>= 1+15.4+2~deb10u1) [arm64],
+ shim-helpers-arm64-signed (>= 1+15.4+2~deb10u1) [arm64],
  grub2-common (>= 2.02+dfsg1-20+deb10u4)
 Recommends: secureboot-db
 Built-Using: shim (= ${shim:Version})
