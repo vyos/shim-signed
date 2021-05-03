@@ -1,4 +1,4 @@
-shim-signed (1.34) unstable; urgency=medium
+shim-signed (1.34~1+deb10u1) buster; urgency=medium
 
   Debian no longer supports UEFI Secure Boot on arm64 systems
 
