@@ -5,6 +5,7 @@ shim-signed (1.36~1+deb10u1) buster; urgency=medium
     try to call it.
   * If we're not running on an EFI system then exit cleanly in
     postinst and postrm. We have nothing to do here
+  * Fix the old doc links for shim-signed.
 
  -- Steve McIntyre <93sam@debian.org>  Mon, 03 May 2021 20:10:11 +0100
 

@@ -1,6 +1,8 @@
 #! /bin/sh
 set -e
 
+#DEBHELPER#
+
 # If we're not on an EFI system, do nothing else
 if [ ! -d /sys/firmware/efi ]; then
     exit 0
@@ -86,8 +88,6 @@ case $1 in
 	fi
 	;;
 esac
-
-#DEBHELPER#
 
 exit 0
 
