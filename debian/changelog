@@ -8,6 +8,7 @@ shim-signed (1.36~1+deb10u1) buster; urgency=medium
   * Fix the old doc links for shim-signed.
   * Add defensive code around calls to db_get. Don't fail if they
     return errors.
+  * Update build-dep on shim-unsigned to use 15.4-5~deb10u1
 
  -- Steve McIntyre <93sam@debian.org>  Sun, 09 May 2021 00:50:28 +0100
 
