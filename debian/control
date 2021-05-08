@@ -17,6 +17,7 @@ Package: shim-signed
 Architecture: amd64 i386 arm64
 Multi-Arch: same
 Depends: ${misc:Depends},
+ shim-signed-common (>= ${binary:Version}),
  grub-efi-amd64-bin [amd64],
  shim-helpers-amd64-signed (>= 1+15.4+2~deb10u1) [amd64],
  grub-efi-ia32-bin [i386],

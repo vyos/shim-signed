@@ -1,3 +1,11 @@
+shim-signed (1.36~1+deb10u1) buster; urgency=medium
+
+  * Add explicit dependency from shim-signed to shim-signed-common.
+    Also check if we have update-secureboot-policy available before we
+    try to call it.
+
+ -- Steve McIntyre <93sam@debian.org>  Mon, 03 May 2021 20:10:11 +0100
+
 shim-signed (1.34~1+deb10u1) buster; urgency=medium
 
   * Buster update: build against new signed binaries corresponding to
