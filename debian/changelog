@@ -1,3 +1,13 @@
+shim-signed (1.36~1+deb10u2) buster; urgency=high
+
+  * Workaround for boot-breaking bug on arm64. Despite initial testing
+    suggesting otherwise, even an unsigned arm64 build of 15.4 seems
+    likely to crash at boot on some systems. Copy an old version of
+    the unsigned arm64 shim into place for now. This will not support
+    Secure Boot, but it will at least allow people to boot.
+
+ -- Steve McIntyre <93sam@debian.org>  Sat, 19 Jun 2021 17:17:39 +0100
+
 shim-signed (1.36~1+deb10u1) buster; urgency=medium
 
   * Add explicit dependency from shim-signed to shim-signed-common.
