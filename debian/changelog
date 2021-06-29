@@ -1,3 +1,17 @@
+shim-signed (1.37~1+deb10u1) buster; urgency=medium
+
+  * Buster update: build against new signed binaries corresponding to
+    15.4-6~deb10u1. Pulls multiple bugfixes in for the signed version:
+    + Add arm64 patch to tweak section layout and stop crashing
+      problems. Upstream issue #371. (#990082, #990190)
+    + In insecure mode, don't abort if we can't create the MokListXRT
+      variable. Upstream issue #372. (#989962, #990158)
+  * Update build-dep on shim-unsigned to use 15.4-6~deb10u1
+  * Switch arm64 back to using a current unsigned build (undo changes
+    in 1.36~1+deb10u2)
+
+ -- Steve McIntyre <93sam@debian.org>  Tue, 29 Jun 2021 09:39:32 +0100
+
 shim-signed (1.36~1+deb10u2) buster; urgency=high
 
   * Workaround for boot-breaking bug on arm64. Despite initial testing

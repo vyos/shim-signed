@@ -20,7 +20,7 @@ verify_x64 verify_ia32:
 verify_aa64:
 	@echo "Copying unsigned arm64 shim into place, sorry :-("
 	mkdir -p build
-	cp shimaa64.efi.OLD.HACK build/shim$(EFI_ARCH).efi.signed
+	cp /usr/lib/shim/shim$(EFI_ARCH).efi build/shim$(EFI_ARCH).efi.signed
 
 clean:
 	rm -rf build

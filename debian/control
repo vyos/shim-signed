@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian EFI Team <debian-efi@lists.debian.org>
 Uploaders: Steve McIntyre <93sam@debian.org>, Steve Langasek <vorlon@debian.org>
 Build-Depends: debhelper (>= 9),
- shim-unsigned (= 15.4-5~deb10u1),
+ shim-unsigned (= 15.4-6~deb10u1),
 # sbsigntool before 0.9.2-2 had a horrid bug with checksum calculation
 # which broke our build
  sbsigntool (>= 0.9.2-2),
