@@ -1,3 +1,16 @@
+shim-signed (1.39~1+deb10u1) UNRELEASED; urgency=medium
+
+  * Build against new signed binaries corresponding to 15.7-1~deb11u1
+    Pulls multiple bugfixes in for the signed version:
+    + Make sbat_var.S parse right with buggy gcc/binutils
+    + Enable NX support at build time, as required by policy for signing
+      new shim binaries.
+  * Update build-dep on shim-unsigned to use 15.7-1~deb11u1
+  * Block Debian grub binaries with sbat < 4 (see #1024617)
+    + Update Depends on grub2-common to match.
+
+ -- Steve McIntyre <93sam@debian.org>  Sat, 18 Feb 2023 00:53:46 +0000
+
 shim-signed (1.38) unstable; urgency=medium
 
   * Tweak how we call grub-install; don't abort on error. Not ideal
