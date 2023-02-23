@@ -8,8 +8,9 @@ shim-signed (1.39~1+deb10u1) UNRELEASED; urgency=medium
   * Update build-dep on shim-unsigned to use 15.7-1~deb10u1
   * Block Debian grub binaries with sbat < 4 (see #1024617)
     + Update Depends on grub2-common to match.
+  * postinst/postrm: make config_item() more robust
 
- -- Steve McIntyre <93sam@debian.org>  Sat, 18 Feb 2023 00:29:50 +0000
+ -- Steve McIntyre <93sam@debian.org>  Thu, 23 Feb 2023 22:27:32 +0000
 
 shim-signed (1.38~1+deb10u1) buster; urgency=medium
 
