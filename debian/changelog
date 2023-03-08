@@ -1,4 +1,4 @@
-shim-signed (1.39~1+deb10u1) UNRELEASED; urgency=medium
+shim-signed (1.39~1+deb10u1) buster-security; urgency=medium
 
   * Build against new signed binaries corresponding to 15.7-1~deb10u1
     Pulls multiple bugfixes in for the signed version:
@@ -10,7 +10,7 @@ shim-signed (1.39~1+deb10u1) UNRELEASED; urgency=medium
     + Update Depends on grub2-common to match.
   * postinst/postrm: make config_item() more robust
 
- -- Steve McIntyre <93sam@debian.org>  Thu, 23 Feb 2023 22:27:32 +0000
+ -- Steve McIntyre <93sam@debian.org>  Wed, 08 Mar 2023 22:39:52 +0000
 
 shim-signed (1.38~1+deb10u1) buster; urgency=medium
 
