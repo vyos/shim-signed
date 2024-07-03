@@ -7,6 +7,7 @@ shim-signed (1.44~1+deb12u1) UNRELEASED; urgency=medium
   * Multiple packaging updates backported:
     + Add Romanian translation for debconf templates (thanks to
       Remus-Gabriel Chelu)
+    + Stop recommending secureboot-db, we don't have that package
 
  -- Steve McIntyre <93sam@debian.org>  Wed, 03 Jul 2024 21:59:25 +0100
 
