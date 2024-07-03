@@ -1,3 +1,12 @@
+shim-signed (1.44~1+deb11u1) UNRELEASED; urgency=medium
+
+  * Build against new signed binaries corresponding to 15.8-1~deb11u1
+  * Update build-dep on shim-unsigned to use 15.8-1~deb11u1
+  * NOTE: this will block use of older grub binaries with sbat < 4
+    + Update Depends on grub2-common to match.
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 03 Jul 2024 21:59:25 +0100
+
 shim-signed (1.39~1+deb11u1) bullseye; urgency=medium
 
   * Build against new signed binaries corresponding to 15.7-1~deb11u1
