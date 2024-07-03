@@ -5,6 +5,9 @@ Maintainer: Debian EFI Team <debian-efi@lists.debian.org>
 Uploaders: Steve McIntyre <93sam@debian.org>, Steve Langasek <vorlon@debian.org>
 Build-Depends: debhelper (>= 13),
  shim-unsigned (= 15.8-1~deb11u1),
+ shim-helpers-amd64-signed [amd64],
+ shim-helpers-arm64-signed [arm64],
+ shim-helpers-i386-signed [i386],
 # sbsigntool before 0.9.2-2 had a horrid bug with checksum calculation
 # which broke our build
  sbsigntool (>= 0.9.2-2),
@@ -19,11 +22,11 @@ Multi-Arch: same
 Depends: ${misc:Depends},
  shim-signed-common (>= ${binary:Version}),
  grub-efi-amd64-bin [amd64],
- shim-helpers-amd64-signed (>= 1+15.4+2) [amd64],
+ shim-helpers-amd64-signed (>= ${helpers:Version}) [amd64],
  grub-efi-ia32-bin [i386],
- shim-helpers-i386-signed (>= 1+15.4+2) [i386],
+ shim-helpers-i386-signed (>= ${helpers:Version}) [i386],
  grub-efi-arm64-bin [arm64],
- shim-helpers-arm64-signed (>= 1+15.4+2) [arm64],
+ shim-helpers-arm64-signed (>= ${helpers:Version}) [arm64],
  grub2-common (>= 2.06-3~deb11u6)
 Built-Using: shim (= ${shim:Version})
 Description: Secure Boot chain-loading bootloader (Microsoft-signed binary)
