@@ -1,4 +1,4 @@
-shim-signed (1.44~1+deb12u1) UNRELEASED; urgency=medium
+shim-signed (1.44~1+deb12u1) bookworm; urgency=medium
 
   * Build against new signed binaries corresponding to 15.8-1~deb12u1
   * Update build-dep on shim-unsigned to use 15.8-1~deb12u1
