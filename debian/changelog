@@ -4,6 +4,9 @@ shim-signed (1.44~1+deb11u1) UNRELEASED; urgency=medium
   * Update build-dep on shim-unsigned to use 15.8-1~deb11u1
   * NOTE: this will block use of older grub binaries with sbat < 4
     + Update Depends on grub2-common to match.
+  * Multiple packaging updates backported:
+    + Add Romanian translation for debconf templates (thanks to
+      Remus-Gabriel Chelu)
 
  -- Steve McIntyre <93sam@debian.org>  Wed, 03 Jul 2024 21:59:25 +0100
 

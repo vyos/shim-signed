@@ -1,0 +1,181 @@
+# Romanian translation of shim-signed.
+# Mesajele în limba română pentru pachetul shim-signed.
+# Copyright © 2023 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the shim-signed package.
+#
+# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2023.
+#
+# Cronologia traducerii fișierului „debconf_shim-signed”:
+# Traducerea inițială, făcută de R-GC, pentru versiunea debconf_shim-signed 1.39(2018-11-04 08).
+# Actualizare a traducerii pentru versiunea Y, făcută de X, Y(luna-anul).
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: shim-signed\n"
+"Report-Msgid-Bugs-To: shim-signed@packages.debian.org\n"
+"POT-Creation-Date: 2018-11-04 08:13+0100\n"
+"PO-Revision-Date: 2023-06-25 17:27+0200\n"
+"Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
+"Language-Team: \n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
+"n%100<=19) ? 1 : 2);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#. Type: text
+#. Description
+#: ../templates:1001
+msgid "Configuring UEFI Secure Boot"
+msgstr "Configurarea pornirii securizate UEFI „UEFI Secure Boot”"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid "Invalid password"
+msgstr "Parolă nevalidă"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid ""
+"The Secure Boot key you've entered is not valid. The password used must be "
+"between 8 and 16 characters."
+msgstr ""
+"Cheia de pornire securizată „Secure Boot” pe care ați introdus-o nu este "
+"validă. Parola utilizată trebuie să aibă între 8 și 16 caractere."
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid "Disable UEFI Secure Boot?"
+msgstr "Dezactivați pornirea securizată UEFI „UEFI Secure Boot”?"
+
+#. Type: boolean
+#. Description
+#. Type: note
+#. Description
+#: ../templates:3001 ../templates:5001
+msgid ""
+"If Secure Boot remains enabled on your system, your system may still boot but "
+"any hardware that requires third-party drivers to work correctly may not be "
+"usable."
+msgstr ""
+"Dacă pornirea securizată „Secure Boot” rămâne activată pe sistemul dvs., este "
+"posibil ca acesta să pornească în continuare, dar este posibil ca orice "
+"dispozitiv fizic care necesită controlori de la terți pentru a funcționa "
+"corect să nu poată fi utilizat."
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid "Enable UEFI Secure Boot?"
+msgstr "Activați pornirea securizată UEFI „UEFI Secure Boot”?"
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid ""
+"If Secure Boot is enabled on your system, your system may still boot but any "
+"hardware that requires third-party drivers to work correctly may not be "
+"usable."
+msgstr ""
+"Dacă pornirea securizată „Secure Boot” este activată pe sistemul dvs., este "
+"posibil ca acesta să pornească în continuare, dar este posibil ca orice "
+"dispozitiv fizic care necesită controlori de la terți pentru a funcționa "
+"corect să nu poată fi utilizat."
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid "Your system has UEFI Secure Boot enabled"
+msgstr "Sistemul dvs. are activată pornirea securizată UEFI „UEFI Secure Boot”"
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid "UEFI Secure Boot is not compatible with the use of third-party drivers."
+msgstr ""
+"Pornirea securizată UEFI „UEFI Secure Boot” nu este compatibilă cu utilizarea "
+"de controlori de la terți."
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid ""
+"The system will assist you in toggling UEFI Secure Boot. To ensure that this "
+"change is being made by you as an authorized user, and not by an attacker, "
+"you must choose a password now and then use the same password after reboot to "
+"confirm the change."
+msgstr ""
+"Sistemul vă va ajuta să activați/dezactivați pornirea securizată UEFI „UEFI "
+"Secure Boot”. Pentru a vă asigura că această modificare este efectuată de "
+"dumneavoastră, ca utilizator autorizat, și nu de un atacator, trebuie să "
+"alegeți o parolă acum și apoi să folosiți aceeași parolă după repornire "
+"pentru a confirma modificarea."
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid ""
+"If you choose to proceed but do not confirm the password upon reboot, the "
+"Secure Boot configuration will not be changed, and the machine will continue "
+"booting as before."
+msgstr ""
+"Dacă alegeți să continuați, dar nu confirmați parola la repornire, "
+"configurația de pornire securizată „Secure Boot” nu va fi modificată, iar "
+"mașina va continua să pornească la fel ca înainte."
+
+#. Type: password
+#. Description
+#: ../templates:6001
+msgid "UEFI Secure Boot password:"
+msgstr "Parola pornirii securizate UEFI „UEFI Secure Boot”:"
+
+#. Type: password
+#. Description
+#: ../templates:6001
+msgid "Please enter a password for configuring UEFI Secure Boot."
+msgstr ""
+"Introduceți o parolă pentru configurarea pornirii securizate UEFI „UEFI "
+"Secure Boot”."
+
+#. Type: password
+#. Description
+#: ../templates:6001
+msgid ""
+"This password will be used after a reboot to confirm authorization for a "
+"change to Secure Boot state."
+msgstr ""
+"Această parolă va fi folosită după o repornire pentru a confirma autorizarea "
+"pentru modificarea stării de pornire securizată „Secure Boot”."
+
+#. Type: password
+#. Description
+#: ../templates:7001
+msgid "Re-enter password to verify:"
+msgstr "Reintroduceți parola pentru verificare:"
+
+#. Type: password
+#. Description
+#: ../templates:7001
+msgid ""
+"Please enter the same password again to verify that you have typed it "
+"correctly."
+msgstr ""
+"Introduceți din nou aceeași parolă pentru a verifica dacă ați tastat-o corect."
+
+#. Type: error
+#. Description
+#: ../templates:8001
+msgid "Password input error"
+msgstr "Eroare de introducere a parolei"
+
+#. Type: error
+#. Description
+#: ../templates:8001
+msgid "The two passwords you entered were not the same. Please try again."
+msgstr ""
+"Cele două parole pe care le-ați introdus nu au corespuns. Încercați din nou."
