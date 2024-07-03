@@ -1,10 +1,11 @@
 #! /usr/bin/make -f
 
+include /usr/share/dpkg/architecture.mk
+
 VERSION := $(shell LC_ALL=C dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
 SHIM_VERSION := $(shell dpkg-query -f '$${Version}\n' -W shim-unsigned)
+SHIM_HELPERS_VERSION := $(shell dpkg-query -f '$${Version}\n' -W shim-helpers-$(DEB_HOST_ARCH)-signed)
 VENDOR := $(shell dpkg-vendor --query vendor)
-
-include /usr/share/dpkg/architecture.mk
 
 ifeq ($(DEB_HOST_ARCH),amd64)
 export EFI_ARCH := x64
@@ -33,4 +34,5 @@ endif
 
 override_dh_gencontrol:
 	dh_gencontrol -- -v$(VERSION)+$(SHIM_VERSION) \
-		-Vshim:Version=$(SHIM_VERSION)
+		-Vshim:Version=$(SHIM_VERSION) \
+		-Vhelpers:Version=$(SHIM_HELPERS_VERSION)
