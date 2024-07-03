@@ -1,4 +1,4 @@
-shim-signed (1.44~1+deb11u1) UNRELEASED; urgency=medium
+shim-signed (1.44~1+deb11u1) bullseye; urgency=medium
 
   * Build against new signed binaries corresponding to 15.8-1~deb11u1
   * Update build-dep on shim-unsigned to use 15.8-1~deb11u1
@@ -11,7 +11,7 @@ shim-signed (1.44~1+deb11u1) UNRELEASED; urgency=medium
     + Tweak dependencies using substvars (thanks for help from Fabian
       Grünbichler)
 
- -- Steve McIntyre <93sam@debian.org>  Wed, 03 Jul 2024 21:59:25 +0100
+ -- Steve McIntyre <93sam@debian.org>  Wed, 03 Jul 2024 22:51:32 +0100
 
 shim-signed (1.39~1+deb11u1) bullseye; urgency=medium
 
