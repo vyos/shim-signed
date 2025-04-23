@@ -1,0 +1,169 @@
+# Catalan translation of shim-signed's debconf messages
+# This file is distributed under the same license as the shim-signed package.
+# poc senderi <pocsenderi@protonmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: shim-signed\n"
+"Report-Msgid-Bugs-To: shim-signed@packages.debian.org\n"
+"POT-Creation-Date: 2018-11-04 08:13+0100\n"
+"PO-Revision-Date: 2025-04-19 22:47+0200\n"
+"Last-Translator: poc senderi <pocsenderi@protonmail.com>\n"
+"Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#. Type: text
+#. Description
+#: ../templates:1001
+msgid "Configuring UEFI Secure Boot"
+msgstr "S'està configurant el Secure Boot amb UEFI"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid "Invalid password"
+msgstr "La contrasenya no és vàlida"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid ""
+"The Secure Boot key you've entered is not valid. The password used must be "
+"between 8 and 16 characters."
+msgstr ""
+"La clau del Secure Boot que s'ha introduït no és vàlida. La contrasenya "
+"utilitzada ha de tenir entre 8 i 16 caràcters."
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid "Disable UEFI Secure Boot?"
+msgstr "Voleu desactivar el Secure Boot amb UEFI?"
+
+#. Type: boolean
+#. Description
+#. Type: note
+#. Description
+#: ../templates:3001 ../templates:5001
+msgid ""
+"If Secure Boot remains enabled on your system, your system may still boot "
+"but any hardware that requires third-party drivers to work correctly may "
+"not be usable."
+msgstr ""
+"Si el Secure Boot continua activat al sistema, aquest podrà continuar "
+"arrencant, però qualsevol maquinari que requereixi controladors de tercers "
+"per funcionar correctament podria no ser usable."
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid "Enable UEFI Secure Boot?"
+msgstr "Voleu activar el Secure Boot amb UEFI?"
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid ""
+"If Secure Boot is enabled on your system, your system may still boot but "
+"any hardware that requires third-party drivers to work correctly may not be "
+"usable."
+msgstr ""
+"Si el Secure Boot està activat al sistema, aquest podrà continuar "
+"arrencant, però qualsevol maquinari que requereixi controladors de tercers "
+"per funcionar correctament podria no ser usable."
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid "Your system has UEFI Secure Boot enabled"
+msgstr "El sistema té activat el Secure Boot amb UEFI"
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid ""
+"UEFI Secure Boot is not compatible with the use of third-party drivers."
+msgstr ""
+"El Secure Boot amb UEFI no és compatible amb l'ús de controladors de "
+"tercers."
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid ""
+"The system will assist you in toggling UEFI Secure Boot. To ensure that "
+"this change is being made by you as an authorized user, and not by an "
+"attacker, you must choose a password now and then use the same password "
+"after reboot to confirm the change."
+msgstr ""
+"El sistema us ajudarà a commutar el Secure Boot amb UEFI. Per assegurar que "
+"aquest canvi s'està fent com a usuari autoritzat, i no pas per un atacant, "
+"heu d'escollir una contrasenya ara i després utilitzar la mateixa "
+"contrasenya després de reiniciar per confirmar el canvi."
+
+#. Type: note
+#. Description
+#: ../templates:5001
+msgid ""
+"If you choose to proceed but do not confirm the password upon reboot, the "
+"Secure Boot configuration will not be changed, and the machine will "
+"continue booting as before."
+msgstr ""
+"Si opteu per continuar però no confirmeu la contrasenya al reiniciar, la "
+"configuració del Secure Boot no serà modificada, i la màquina continuarà "
+"arrencant com fins ara."
+
+#. Type: password
+#. Description
+#: ../templates:6001
+msgid "UEFI Secure Boot password:"
+msgstr "Contrasenya del Secure Boot amb UEFI:"
+
+#. Type: password
+#. Description
+#: ../templates:6001
+msgid "Please enter a password for configuring UEFI Secure Boot."
+msgstr "Introduïu una contrasenya per configurar el Secure Boot amb UEFI."
+
+#. Type: password
+#. Description
+#: ../templates:6001
+msgid ""
+"This password will be used after a reboot to confirm authorization for a "
+"change to Secure Boot state."
+msgstr ""
+"Aquesta contrasenya s'utilitzarà després d'un reinici per confirmar "
+"l'autorització d'un canvi a l'estat del Secure Boot."
+
+#. Type: password
+#. Description
+#: ../templates:7001
+msgid "Re-enter password to verify:"
+msgstr "Torneu a introduir la contrasenya per verificar-la:"
+
+#. Type: password
+#. Description
+#: ../templates:7001
+msgid ""
+"Please enter the same password again to verify that you have typed it "
+"correctly."
+msgstr ""
+"Introduïu la mateixa contrasenya altre cop per verificar que s'ha escrit "
+"correctament."
+
+#. Type: error
+#. Description
+#: ../templates:8001
+msgid "Password input error"
+msgstr "Hi ha hagut un error amb la introducció de la contrasenya"
+
+#. Type: error
+#. Description
+#: ../templates:8001
+msgid "The two passwords you entered were not the same. Please try again."
+msgstr ""
+"Les dues contrasenyes que heu introduït no són iguals. Torneu-ho a provar."
