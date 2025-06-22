@@ -1,3 +1,13 @@
+shim-signed (1.45) unstable; urgency=medium
+
+  [ Luca Boccassi ]
+  * Add alternative dependencies on systemd-boot. Closes: #1086714
+
+  [ Carles Pina i Estany ]
+  * Add po-debconf Catalan translation. Closes: #1106345
+
+ -- Steve McIntyre <93sam@debian.org>  Sun, 22 Jun 2025 23:47:17 +0100
+
 shim-signed (1.44) unstable; urgency=medium
 
   [ Fabian Grünbichler ]
