@@ -40,7 +40,7 @@ Description: Secure Boot chain-loading bootloader (Microsoft-signed binary)
 Package: shim-signed-common
 Multi-Arch: foreign
 Architecture: all
-Depends: ${misc:Depends}, mokutil
+Depends: ${misc:Depends}, mokutil, openssl, kmod
 Replaces: shim-signed (<< 1.32+15+1533136590.3beb971-5)
 Breaks: shim-signed (<< 1.32+15+1533136590.3beb971-5)
 Description: Secure Boot chain-loading bootloader (common helper scripts)

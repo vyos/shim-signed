@@ -1,3 +1,16 @@
+shim-signed (1.47) unstable; urgency=medium
+
+  * update-secureboot-policy: do better checking around DKMS
+    If we have DKMS modules installed:
+    + Check to see if a DKMS MOK key has been created and enrolled;
+    + Check that all the DKMS modules are signed with that key;
+    If successful, don't tell users to disable Secure Boot.
+    Closes: #1108278.
+    Add dependencies on openssl and kmod for shim-signed-common,
+    needed for implementing these check.
+
+ -- Steve McIntyre <93sam@debian.org>  Tue, 29 Jul 2025 18:40:14 +0100
+
 shim-signed (1.46) unstable; urgency=medium
 
   * No-change rebuild to upload source-only. Argh. :-/

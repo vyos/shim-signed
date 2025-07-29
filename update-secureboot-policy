@@ -26,6 +26,7 @@ setup_mok_validation()
     secureboot_var=SecureBoot-8be4df61-93ca-11d2-aa0d-00e098032b8c
     moksb_var=MokSB-605dab50-e046-4300-abb6-3dd810dd8b23
     moksbstatert_var=MokSBStateRT-605dab50-e046-4300-abb6-3dd810dd8b23
+    dkms_mok_pubkey=/var/lib/dkms/mok.pub
     action=disable
 
     if [ $enable_sb -eq 1 ]; then
@@ -51,8 +52,55 @@ setup_mok_validation()
         moksbstatert=$(od -An -t u1 $efivars/$moksbstatert_var | \
                        awk '{ print $NF; }')
     fi
+
     # poor man's xor
     if [ $(($moksbstatert+$enable_sb)) -ne 1 ]; then
+
+        echo "$0: Checking status of DKMS module signing:" >&2
+
+        # We have DKMS and secure boot is enabled. Check to see if we
+        # have a DKMS key and if it's enrolled in MOK. If it is, we
+        # should be fine.
+        if [ -f $dkms_mok_pubkey ]; then
+            echo "  [ OK ] System DKMS key found in $dkms_mok_pubkey" >&2
+            registered_ok=0
+
+            # Gran the serial number of the DKMS key
+            dkms_key=$(openssl x509 -in $dkms_mok_pubkey -text | \
+                awk '/Serial Number/ {getline;print tolower($1)}')
+
+            # And compare it to all the keys that MOK knows about -
+            # any match is good enough.
+            for mok_key in $(mokutil --list-enrolled | \
+                    awk '/Serial Number/ {getline;print tolower($1)}'); do
+                if [ "$dkms_key"x = "$mok_key"x ]; then
+                    echo "  [ OK ] System DKMS key is registered via MOK" >&2
+                    registered_ok=1
+                fi
+            done
+            if [ $registered_ok != 1 ]; then
+                echo "  E: System's DKMS key is NOT installed in MOK." >&2
+            else
+                signed_ok=1
+                # Now check all the DKMS modules we can find are
+                # signed with this key.
+                for mod in $(find /var/lib/dkms/ -name '*.ko'); do
+                    mod_key=$(modinfo $mod | awk '/sig_key:/ {print tolower($2)}')
+                    if [ "$mod_key"x != "$dkms_key"x ]; then
+                        echo "  E: $mod is not signed with the DKMS key" >&2
+                        signed_ok=0
+                    fi
+                done
+                if [ $signed_ok = 1 ]; then
+                    echo "  [ OK ] All DKMS modules signed with the DKMS key" >&2
+                    echo "All OK, nothing to do." >&2
+                    return 0
+                else
+                    echo "  Some modules not signed with the DKMS key. Rebuild?." >&2
+                fi
+            fi
+        fi
+
         STATE=1
         db_settitle shim/title/secureboot
         while true; do
