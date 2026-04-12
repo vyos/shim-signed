@@ -1,0 +1,163 @@
+#!/bin/sh
+#
+# verify_combine_sigs
+#
+# Helper script for shim-signed
+#
+# Microsoft currently only return signed binaries with one signature;
+# if they are signing with more than key/cert, then we will get
+# multiple separate signed binaries, one per key/cert.
+#
+# Check that all our signed shims are signed with an expected key that
+# we can remove and re-add; error out otherwise.
+#
+# Then finally we will add all those signatures to one output binary.
+#
+# Order of the listed signed shims matters here - list them *in the
+# same order* as the signatures we'd like in the final binary. It's
+# recommended to do this in the order:
+#
+# <oldest CA>
+# ...
+# <newest CA>
+#
+# as that is most likely to work with older firmware implementations.
+# That's most easily achieved by naming the signatures like
+# 0001-first-CA.crt, 0002-second-CA.crt, etc.
+
+# Allowed certificates - each binary must be signed with a certificate
+# from this set.
+SIGN_CERTS="*.crt"
+
+# Path to sbverify - special build for now
+SBVERIFY="/home/steve/debian/efi/packages/sbsigntool/upstream.git/src/sbverify"
+
+EFI_ARCH=""
+while getopts ":a:" o; do
+    case "${o}" in
+        a)
+            EFI_ARCH=${OPTARG}
+            ;;
+        *)
+            echo "Unknown option ${o}"
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ "$EFI_ARCH"x = ""x ]; then
+    echo "Need to specify the EFI architecture name"
+    exit 1
+fi
+
+set -e
+
+
+echo "Verifying signatures for arch ${EFI_ARCH} ..."
+echo "=========="
+echo
+
+BUILD="build"
+rm -rf ${BUILD}
+mkdir ${BUILD}
+
+for signed in $@; do
+
+    OK=0
+
+    echo "Checking $signed"
+    echo "----------"
+    echo
+
+    this_cert=""
+
+    # Check against all the certs we have
+    for check_cert in ${SIGN_CERTS}; do
+
+        # Verify that the image is signed with a key we know about.
+        echo "Looking for a signature from ${check_cert}"
+        if $SBVERIFY --cert ${check_cert} ${signed}; then
+            echo "Signature found from cert ${check_cert}"
+            echo
+            OK=$(($OK + 1))
+            found_cert=${check_cert}
+        else
+            echo "Signature NOT found from cert ${check_cert}"
+            echo
+        fi
+    done
+
+    # If we didn't match exactly *1* signature, then we have a problem
+    case $OK in
+        0)
+            echo "FAIL: Could not find an expected signature on $signed"
+	    rm -rf ${BUILD}
+            exit 1
+            ;;
+        1)
+            echo "OK: $signed has 1 expected signature"
+            ;;
+        *)
+            echo "FAIL: $signed has more than 1 signature, not expected or supported"
+	    rm -rf ${BUILD}
+            exit 1
+            ;;
+    esac
+
+    # Now we know we have a single signature on this binary, let's
+    # validate other stuff.
+    
+    det_sig="detached-${found_cert}"
+
+    # Verify that we have the correct binary, in a few steps:
+    
+    # 1. Extract this signature.
+    echo "Extracting signature"
+    sbattach --detach ${BUILD}/${det_sig} ${signed} 2>/dev/null
+    echo "Signature extracted OK to ${BUILD}/${det_sig}"
+    echo
+
+    # 2. Copy our matching unsigned binary into the ${BUILD}
+    #    directory.
+    cp /usr/lib/shim/shim${EFI_ARCH}.efi \
+       ${BUILD}/shim${EFI_ARCH}.efi.signed
+    
+    # 3. Attach the signature to our unsigned binary, so we know it
+    #    has not been tampered with.
+    echo "Checking the signature applies to our original binary"
+    sbattach --attach ${BUILD}/${det_sig} \
+             ${BUILD}/shim${EFI_ARCH}.efi.signed
+    echo "Signature applies OK"
+    echo
+
+    # 4. Compare the result to the signed binary we were given
+    echo "Comparing the signed binaries"
+    sha256sum ${signed} ${BUILD}/shim${EFI_ARCH}.efi.signed
+    cmp ${signed} ${BUILD}/shim${EFI_ARCH}.efi.signed
+    echo "Binaries match"
+    echo
+
+    echo "----------"
+
+done
+
+# If we've got this far, then things look OK. Now we want to build a
+# single output image with all the signatures attached.
+
+echo "Building final combined shim for arch ${EFI_ARCH} ..."
+echo "=========="
+echo
+
+cp /usr/lib/shim/shim${EFI_ARCH}.efi \
+   ${BUILD}/shim${EFI_ARCH}.efi.signed
+
+for sig in ${BUILD}/detached-*; do
+    echo "Adding signature ${sig}"
+    sbattach --attach ${sig} ${BUILD}/shim${EFI_ARCH}.efi.signed
+    echo
+done
+
+# And show the list of signatures
+echo "Signatures on ${BUILD}/shim${EFI_ARCH}.efi.signed :"
+${SBVERIFY} -l ${BUILD}/shim${EFI_ARCH}.efi.signed
