@@ -31,6 +31,7 @@ SIGN_CERTS="*.crt"
 
 # Path to sbverify - special build for now
 SBVERIFY="/home/steve/debian/efi/packages/sbsigntool/upstream.git/src/sbverify"
+SBVERIFY="sbverify"
 
 EFI_ARCH=""
 while getopts ":a:" o; do
