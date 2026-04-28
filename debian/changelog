@@ -1,3 +1,12 @@
+shim-signed (1.48) UNRELEASED; urgency=medium
+
+  * Add support for verifying and then combining signatures from
+    multiple signed shims.
+
+    WIP: needs a fixed version of sbverify to work...
+
+ -- Steve McIntyre <93sam@debian.org>  Tue, 12 Apr 2026 15:11:11 +0100
+
 shim-signed (1.47) unstable; urgency=medium
 
   * update-secureboot-policy: do better checking around DKMS
