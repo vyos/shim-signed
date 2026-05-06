@@ -174,7 +174,7 @@ def main():
     print("Loading details of all the expected certificates")
     print("==========")
     known_certs = {}
-    for check_cert in glob.glob(SIGN_CERTS):
+    for check_cert in sorted(glob.glob(SIGN_CERTS)):
         subject, sha256 = grab_cert_details(check_cert)
         known_certs[subject] = {"sha256": sha256, "filename": check_cert}
     print("")
@@ -194,7 +194,7 @@ def main():
         # Verify that the image is signed and valid
         print("Looking for any valid checksum and signature")
         try:
-            verify_signature(signed, glob.glob(SIGN_CERTS))
+            verify_signature(signed, sorted(glob.glob(SIGN_CERTS)))
         except Exception as exc:
             print(f"Invalid signature on {signed}: {exc}")
             sys.exit(1)
@@ -281,7 +281,7 @@ def main():
         unsigned,
     )
 
-    for sig in glob.glob(f"{build}/detached-*"):
+    for sig in sorted(glob.glob(f"{build}/detached-*")):
         print(f"Adding signature {sig}")
         attach_sig(sig, unsigned)
 
