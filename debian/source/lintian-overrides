@@ -1,2 +1,1 @@
-shim-signed: source-contains-prebuilt-windows-binary [shimaa64.efi.signed]
-shim-signed: source-contains-prebuilt-windows-binary [shimx64.efi.signed]
+shim-signed: source-contains-prebuilt-windows-binary [*shim*.efi.signed*]
