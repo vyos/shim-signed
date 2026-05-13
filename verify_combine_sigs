@@ -27,6 +27,7 @@
 
 import os
 import glob
+import re
 import sys
 import subprocess
 import argparse
@@ -65,10 +66,12 @@ def grab_cert_details(check_cert: str) -> (str, str):
         pem_data = inf.read()
     cert = x509.load_pem_x509_certificate(pem_data)
     subject = "/" + "/".join([x.value for x in cert.subject])
+    sha1 = cert.fingerprint(hashes.SHA1()).hex()
     sha256 = cert.fingerprint(hashes.SHA256()).hex()
     print(f" - {subject}")
+    print(f" - sha1sum {sha1}")
     print(f" - sha256sum {sha256}")
-    return subject, sha256
+    return subject, sha1, sha256
 
 
 def list_signatures(signed_filename: str):
@@ -133,8 +136,9 @@ def certs_in_detached_signature(detached: str) -> list[dict]:
     certs = pkcs7.load_der_pkcs7_certificates(pkcs7_data)
     for cert in certs:
         subject = "/" + "/".join([x.value for x in cert.subject])
+        sha1 = cert.fingerprint(hashes.SHA1()).hex()
         sha256 = cert.fingerprint(hashes.SHA256()).hex()
-        output.append({"sha256": sha256, "subject": subject})
+        output.append({"sha1": sha1, "sha256": sha256, "subject": subject})
 
     # We want them in the order CA -> leaf
     output.reverse()
@@ -175,8 +179,12 @@ def main():
     print("==========")
     known_certs = {}
     for check_cert in sorted(glob.glob(SIGN_CERTS)):
-        subject, sha256 = grab_cert_details(check_cert)
-        known_certs[subject] = {"sha256": sha256, "filename": check_cert}
+        subject, sha1, sha256 = grab_cert_details(check_cert)
+        known_certs[subject] = {
+            "sha1": sha1,
+            "sha256": sha256,
+            "filename": check_cert
+        }
     print("")
 
     print(f"Verifying signatures for arch {args.efi_arch} ...")
@@ -220,7 +228,8 @@ def main():
         print("certs attached:")
         for cert in sig_certs:
             print(f'  - {cert["subject"]}')
-            print(f'  - {cert["sha256"]}')
+            print(f'  - sha1 {cert["sha1"]}')
+            print(f'  - sha256 {cert["sha256"]}')
 
         # Now we need to compare the root certificate there to our
         # known certificates
@@ -233,6 +242,7 @@ def main():
                     f'\nroot certificate matches a known certificate ({data["filename"]})'
                 )
                 matched_filename = data["filename"]
+                matched_sha1 = data["sha1"]
 
         if matched_filename is None:
             print(f"\nERROR: {signed} signature unknown, abort!")
@@ -241,6 +251,12 @@ def main():
         # Move the detached signature to one side, for future use
         new_filename = os.path.join(build, f"detached-{matched_filename}")
         shutil.move(detached_sig, new_filename)
+
+        # And write out the sha1 checksum of the cert for later use
+        sha1_filename = os.path.join(build, f"sha1-{matched_filename}")
+        with open(sha1_filename, "w") as outf:
+            output = (':'.join(re.findall('..', matched_sha1)))
+            outf.write(output)
 
         # Copy our matching unsigned binary into the ${BUILD} directory.
         unsigned = f"{build}/shim{args.efi_arch}.efi.signed"
@@ -284,6 +300,13 @@ def main():
     for sig in sorted(glob.glob(f"{build}/detached-*")):
         print(f"Adding signature {sig}")
         attach_sig(sig, unsigned)
+
+    # Stick the signature fingerprints together
+    with open(f"{unsigned}-signatures", "w") as outf:
+        for fp in sorted(glob.glob(f"{build}/sha1-*")):
+            with open(fp) as inf:
+                fingerprint = inf.read()
+            outf.write(fingerprint + "\n")
 
     # And finally show the list of signatures
     print(f"Signatures on {unsigned} :")
