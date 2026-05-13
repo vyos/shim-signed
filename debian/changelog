@@ -2,10 +2,11 @@ shim-signed (1.48) UNRELEASED; urgency=medium
 
   * Add support for verifying and then combining signatures from
     multiple signed shims.
+    + Existing sbverify versions in Debian are buggy when verifying.
+    + Switch to using a python script verify_combine_sigs to fill in
+      the gaps.
 
-    WIP: needs a fixed version of sbverify to work...
-
- -- Steve McIntyre <93sam@debian.org>  Tue, 12 Apr 2026 15:11:11 +0100
+ -- Steve McIntyre <93sam@debian.org>  Wed, 06 May 2026 23:54:12 +0100
 
 shim-signed (1.47) unstable; urgency=medium
 
