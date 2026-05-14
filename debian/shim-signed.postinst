@@ -106,7 +106,19 @@ case $1 in
 	    echo "Checking shim signatures on $SHIM"
 	    # SB is enabled - we need to check that it is signed by a
 	    # key in the DB list
+
+	    # Grab all the keys in the DB list
 	    for dbkey in $(mokutil --db | awk '/^SHA1 Fingerprint:/ {print $3}'); do
+
+		# Check against the blacklisted keys in DBX
+		for dbxkey in $(mokutil --dbx | awk '/^SHA1 Fingerprint:/ {print $3}'); do
+		    if [ "$dbkey" = "$dbxkey" ]; then
+			# If we match a dbx entry, ignore this db key
+			echo "  Ignoring DB key $dbkey; it's revoked in DBX"
+			break 2
+		    fi
+		done
+
 		if grep -q "$dbkey" $SHIM_SIGS; then
 		    echo "- signed by DB key $dbkey, should boot OK"
 		    SAFE=y
@@ -116,8 +128,10 @@ case $1 in
 
 	if [ $SAFE = n ]; then
 	    # SB is enabled but we don't have a signature that will work
+	    echo "***********************************************************"
 	    echo "SecureBoot is enabled and we don't have a valid signature on $SHIM"
 	    echo "ABORT - this system will not boot with this shim installed."
+	    echo "***********************************************************"
 	    exit 1
 	fi
 
