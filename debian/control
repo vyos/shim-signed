@@ -21,6 +21,7 @@ Package: shim-signed
 Architecture: amd64 arm64
 Multi-Arch: same
 Depends: ${misc:Depends},
+ mokutil,
  shim-signed-common (>= ${source:Version}),
  grub-efi-amd64-bin [amd64] | systemd-boot [amd64],
  shim-helpers-amd64-signed (>= ${helpers:Version}) [amd64],
