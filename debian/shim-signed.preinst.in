@@ -84,7 +84,11 @@ case "$1" in
 	    # SB is enabled but we can't boot this shim
 	    echo "***********************************************************"
 	    echo "$SB_BOOT_ERROR"
-	    echo "ABORT - this system will not boot with this shim installed."
+	    echo
+	    echo "You probably need to update the trusted certificates list (DB)."
+	    echo "See https://wiki.debian.org/SecureBoot/UpdateCA for more information."
+	    echo
+	    echo "ABORT - this system will not currently boot with this shim installed."
 	    echo "***********************************************************"
 	    exit 1
 	fi
