@@ -16,10 +16,12 @@ Build-Depends: debhelper (>= 13),
 Standards-Version: 4.5.1
 Vcs-Browser: https://salsa.debian.org/efi-team/shim-signed
 Vcs-Git: https://salsa.debian.org/efi-team/shim-signed.git
+Rules-Requires-Root: no
 
 Package: shim-signed
 Architecture: amd64 arm64
 Multi-Arch: same
+Pre-Depends: debconf
 Depends: ${misc:Depends},
  mokutil,
  shim-signed-common (>= ${source:Version}),
@@ -37,7 +39,7 @@ Description: Secure Boot chain-loading bootloader (Microsoft-signed binary)
  an OS distributor to revision their main bootloader independently of the CA.
  .
  This package contains the version of the bootloader binary signed by the
- Microsoft UEFI CA.
+ Microsoft UEFI CA(s).
 
 Package: shim-signed-common
 Multi-Arch: foreign

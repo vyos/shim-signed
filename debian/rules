@@ -22,9 +22,6 @@ endif
 
 docdir := debian/shim-signed-common/usr/share/doc/shim-signed-common
 
-override_dh_installdebconf:
-	dh_installdebconf -p shim-signed-common
-
 override_dh_installdeb:
 ifeq ($(VENDOR),Debian)
 	# Remove apport files from Debian builds, they're not useful

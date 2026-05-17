@@ -2,19 +2,27 @@
 
 set -e
 
+type=$1
+
+. /usr/share/debconf/confmodule
+
+# Only change LC_ALL after loading debconf to ensure any debconf templates
+# are properly localized.
+export LC_ALL=C
+
 # Select the right target architecture for grub-install
 ARCH=$(dpkg --print-architecture)
 case ${ARCH} in
     amd64)
-	EFI_ARCH="x64";;
+        EFI_ARCH="x64";;
     i386)
-	EFI_ARCH="ia32";;
+        EFI_ARCH="ia32";;
     arm64)
-	EFI_ARCH="aa64";;
+        EFI_ARCH="aa64";;
     *)
-	echo "Unsupported dpkg architecture ${ARCH} in $0. ABORT"
-	exit 1
-	;;
+        echo "Unsupported dpkg architecture ${ARCH} in $0. ABORT"
+        exit 1
+        ;;
 esac
 
 SHIM="/usr/lib/shim/shim${EFI_ARCH}.efi.signed"
@@ -24,79 +32,82 @@ if [ ! -f "$SHIM" ]; then
 fi
 SHIM_SIGS="@@SHIM_SIGNATURES@@"
 
-# Set the default error message
-SB_BOOT_ERROR="Secure Boot is enabled and we don't have a valid signature on $SHIM"
+# Known error possibilities
+ERR_NONE=0
+ERR_NO_VALID_SIG=1
+ERR_REVOKED=2
 
-case "$1" in
+# Set the default error - no sigs found yet
+SB_BOOT_ERROR=$ERR_NO_VALID_SIG
+
+case "$type" in
     install|upgrade)
 
-	echo "shim-signed: checking if we can safely install $SHIM"
+        echo "shim-signed: checking if we can safely install $SHIM"
 
-	if ! type mokutil > /dev/null 2>&1; then
-	    echo "  Mokutil is not installed, assuming things will be OK."
-	    SB_BOOT_ERROR=""
-	else
-	    # Check that we can safely boot this shim.
-	    SB_STATE=$(mokutil --sb-state 2>&1 || true)
-	    # If SB is not enabled (etc.) then this shim is fine
-	    case $SB_STATE in
-		"SecureBoot disabled"|"This system doesn't support Secure Boot")
-		    echo "  $SB_STATE; shim installation is safe."
-		    SB_BOOT_ERROR=""
-		    ;;
-		"EFI variables are not supported on this system")
-		    echo "  $SB_STATE; assuming shim installation is safe."
-		    SB_BOOT_ERROR=""
-		    ;;
-	    esac
+        if ! type mokutil > /dev/null 2>&1; then
+            echo "  Mokutil is not installed, assuming things will be OK."
+            SB_BOOT_ERROR=$ERR_NONE
+        else
+            # Check that we can safely boot this shim.
+            SB_STATE=$(mokutil --sb-state 2>&1 || true)
+            # If SB is not enabled (etc.) then this shim is fine
+            case $SB_STATE in
+                "SecureBoot disabled"|"This system doesn't support Secure Boot")
+                    echo "  $SB_STATE; shim installation is safe."
+                    SB_BOOT_ERROR=$ERR_NONE
+                    ;;
+                "EFI variables are not supported on this system")
+                    echo "  $SB_STATE; assuming shim installation is safe."
+                    SB_BOOT_ERROR=$ERR_NONE
+                    ;;
+            esac
+        fi
+
+        if [ $SB_BOOT_ERROR != $ERR_NONE ]; then
+            echo "Checking shim signatures on $SHIM:"
+
+            # Secure Boot is enabled - we need to check that our shim
+            # is signed by a key in the DB list.
+
+            # Check against all the keys in the DB list
+            for dbkey in $(mokutil --db | awk '/^SHA1 Fingerprint:/ {print $3}'); do
+                for sig in ${SHIM_SIGS}; do
+                    if [ "$dbkey" = "$sig" ]; then
+                        echo "- signed by DB key $dbkey, should boot OK"
+                        SB_BOOT_ERROR=$ERR_NONE
+                    fi
+                done
+            done
+
+            # Next, check against the blacklisted keys in DBX - any
+            # blacklisted sig will block boot of a shim signed with
+            # that sig.
+            for dbxkey in $(mokutil --dbx | awk '/^SHA1 Fingerprint:/ {print $3}'); do
+                for sig in ${SHIM_SIGS}; do
+                    if [ "$dbxkey" = "$sig" ]; then
+                        echo "- signed by DBX key $dbxkey, will be blocked from booting"
+                        SB_BOOT_ERROR=$ERR_REVOKED
+                    fi
+                done
+            done
+        fi
+
+        if [ $SB_BOOT_ERROR != $ERR_NONE ]; then
+            if [ $SB_BOOT_ERROR = $ERR_NO_VALID_SIG ]; then
+                TEMPLATENAME=shim-signed/no-valid-sigs
+	    elif [ $SB_BOOT_ERROR = $ERR_REVOKED ]; then
+		TEMPLATENAME=shim-signed/revoked-sig
+	    fi
+
+            db_version 2.0
+            db_fset "$TEMPLATENAME" seen false
+            db_reset "$TEMPLATENAME"
+            db_input critical "$TEMPLATENAME" || true
+            db_go
+            db_stop
+            exit 1
 	fi
-
-	if [ "$SB_BOOT_ERROR"x != ""x ]; then
-	    echo "Checking shim signatures on $SHIM:"
-
-	    # Secure Boot is enabled - we need to check that our shim
-	    # is signed by a key in the DB list.
-
-	    # Check against all the keys in the DB list
-	    for dbkey in $(mokutil --db | awk '/^SHA1 Fingerprint:/ {print $3}'); do
-		for sig in ${SHIM_SIGS}; do
-		    if [ "$dbkey" = "$sig" ]; then
-			echo "- signed by DB key $dbkey, should boot OK"
-			SB_BOOT_ERROR=""
-		    fi
-		done
-	    done
-
-	    # Also check against the blacklisted keys in DBX - any
-	    # blacklisted sig will block boot of a shim signed with
-	    # that sig.
-	    for dbxkey in $(mokutil --dbx | awk '/^SHA1 Fingerprint:/ {print $3}'); do
-		for sig in ${SHIM_SIGS}; do
-		    if [ "$dbxkey" = "$sig" ]; then
-			echo "- signed by DBX key $dbxkey, will be blocked from booting"
-			echo "SecureBoot is enabled and $SHIM is blocked due to revocation of $dbxkey,"
-		    fi
-		done
-	    done
-	fi
-
-	if [ "$SB_BOOT_ERROR"x != ""x ]; then
-	    # SB is enabled but we can't boot this shim
-	    echo "***********************************************************"
-	    echo "$SB_BOOT_ERROR"
-	    echo
-	    echo "You probably need to update the trusted certificates list (DB). See"
-	    echo
-	    echo "  https://wiki.debian.org/SecureBoot/UpdateCA"
-	    echo
-	    echo "for more information."
-	    echo
-	    echo "ABORT - this system will not currently boot with this shim installed."
-	    echo "***********************************************************"
-	    exit 1
-	fi
-
-	;;
 esac
 
 #DEBHELPER#

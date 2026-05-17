@@ -1,0 +1,29 @@
+Template: shim-signed/no-valid-sigs
+Type: error
+_Description: No valid UEFI Secure Boot signatures found
+ UEFI Secure Boot is enabled on your system, but the signed shim
+ binary in this package is not signed with a key that your system
+ trusts. This is a FATAL ERROR - your system will not currently
+ boot with this signed shim installed.
+ .
+ To fix this error, you probably need to update the trusted
+ certificates list (DB) on your system. See
+ .
+ https://wiki.debian.org/SecureBoot/UpdateCA
+ .
+ for more information about how to do this.
+
+Template: shim-signed/revoked-sig
+Type: error
+_Description: Shim signed with a revoked key
+ UEFI Secure Boot is enabled on your system, but the signed shim
+ binary in this package is signed by a key that has been revoked on
+ your system. This is a FATAL ERROR - your system will not currently
+ boot with this shim installed.
+ .
+ To fix this error, you probably need to update the trusted
+ certificates revocation list (DBX) on your system. See
+ .
+ https://wiki.debian.org/SecureBoot/UpdateCA
+ .
+ for more information about how to do this.
