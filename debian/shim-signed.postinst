@@ -14,7 +14,7 @@ fi
 # Select the right target architecture for grub-install
 ARCH=$(dpkg --print-architecture)
 case ${ARCH} in
-    amd64)
+    i386|amd64)
 	FW_SIZE=$(cat /sys/firmware/efi/fw_platform_size)
 	if [ "$FW_SIZE"x = "32"x ]; then
 	    GRUB_EFI_TARGET="i386-efi"
@@ -24,36 +24,15 @@ case ${ARCH} in
 	    echo "Unable to read a valid value from fw_platform_size, ABORT"
 	    exit 1
 	fi
-	EFI_ARCH="x64"
-	;;
-    i386)
-	FW_SIZE=$(cat /sys/firmware/efi/fw_platform_size)
-	if [ "$FW_SIZE"x = "32"x ]; then
-	    GRUB_EFI_TARGET="i386-efi"
-	elif [ "$FW_SIZE"x = "64"x ]; then
-	    GRUB_EFI_TARGET="x86_64-efi"
-	else
-	    echo "Unable to read a valid value from fw_platform_size, ABORT"
-	    exit 1
-	fi
-	EFI_ARCH="ia32"
 	;;
     arm64)
 	GRUB_EFI_TARGET="arm64-efi"
-	EFI_ARCH="aa64"
 	;;
     *)
 	echo "Unsupported dpkg architecture ${ARCH} in $0. ABORT"
 	exit 1
 	;;
 esac
-
-SHIM="/usr/lib/shim/shim${EFI_ARCH}.efi.signed"
-if [ ! -f "$SHIM" ]; then
-    echo "No signed shim ($SHIM) included for arch $ARCH. Exit."
-    exit 0
-fi
-SHIM_SIGS="/usr/lib/shim/shim${EFI_ARCH}.efi.signed-signatures"
 
 # Pull out a config value from /etc/default/grub
 config_item ()
@@ -87,64 +66,6 @@ case $1 in
 	case $bootloader_id in
 	    kubuntu) bootloader_id=ubuntu ;;
 	esac
-
-	# Set the default error message
-	SB_BOOT_ERROR="Secure Boot is enabled and we don't have a valid signature on $SHIM"
-
-	echo "shim-signed: checking if we can safely install $SHIM"
-
-	if ! type mokutil > /dev/null 2>&1; then
-	    echo "  Mokutil is not installed, assuming things will be OK."
-	    SB_BOOT_ERROR=""
-	else
-	    # Check that we can safely boot this shim.
-	    SB_STATE=$(mokutil --sb-state 2>&1 || true)
-	    # If SB is not enabled (etc.) then this shim is fine
-	    case $SB_STATE in
-		"SecureBoot disabled"|"This system doesn't support Secure Boot")
-		    echo "  $SB_STATE; shim installation is safe."
-		    SB_BOOT_ERROR=""
-		    ;;
-		"EFI variables are not supported on this system")
-		    echo "  $SB_STATE; assuming shim installation is safe."
-		    SB_BOOT_ERROR=""
-		    ;;
-	    esac
-	fi
-
-	if [ "$SB_BOOT_ERROR"x != ""x ]; then
-	    echo "Checking shim signatures on $SHIM:"
-
-	    # Secure Boot is enabled - we need to check that our shim
-	    # is signed by a key in the DB list.
-
-	    # Check against all the keys in the DB list
-	    for dbkey in $(mokutil --db | awk '/^SHA1 Fingerprint:/ {print $3}'); do
-		if grep -q "$dbkey" $SHIM_SIGS; then
-		    echo "- signed by DB key $dbkey, should boot OK"
-		    SB_BOOT_ERROR=""
-		fi
-	    done
-
-	    # Also check against the blacklisted keys in DBX - any
-	    # blacklisted sig will block boot of a shim signed with
-	    # that sig.
-	    for dbxkey in $(mokutil --dbx | awk '/^SHA1 Fingerprint:/ {print $3}'); do
-		if grep -q "$dbxkey" $SHIM_SIGS; then
-		    echo "- signed by DBX key $dbxkey, will be blocked from booting"
-		    echo "SecureBoot is enabled and $SHIM is blocked due to revocation of $dbxkey,"
-		fi
-	    done
-	fi
-
-	if [ "$SB_BOOT_ERROR"x != ""x ]; then
-	    # SB is enabled but we can't boot this shim
-	    echo "***********************************************************"
-	    echo "$SB_BOOT_ERROR"
-	    echo "ABORT - this system will not boot with this shim installed."
-	    echo "***********************************************************"
-	    exit 1
-	fi
 
 	# Call grub-install to make sure we're added to the ESP as
 	# needed

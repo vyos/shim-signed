@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Embed the signatures for the shim binary in preinst, so we have them
+# before any files are installed.
+
+KNOWN_SIGS=""
+for entry in $(cat build/*-signatures); do
+    KNOWN_SIGS="$KNOWN_SIGS $entry"
+done
+
+sed "s,@@SHIM_SIGNATURES@@,${KNOWN_SIGS}," debian/shim-signed.preinst.in > debian/shim-signed.preinst

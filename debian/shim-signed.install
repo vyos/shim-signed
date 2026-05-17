@@ -1,1 +1,1 @@
-build/shim*.efi.signed* /usr/lib/shim
+build/shim*.efi.signed /usr/lib/shim

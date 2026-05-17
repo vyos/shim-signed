@@ -30,6 +30,8 @@ ifeq ($(VENDOR),Debian)
 	# Remove apport files from Debian builds, they're not useful
 	find debian/shim-signed-common -name '*apport*' | xargs rm -rvf
 endif
+	# Generate preinst from preinst.in
+	debian/generate_preinst
 	dh_installdeb
 
 override_dh_gencontrol:
