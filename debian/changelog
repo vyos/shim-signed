@@ -5,8 +5,11 @@ shim-signed (1.48) UNRELEASED; urgency=medium
     + Existing sbverify versions in Debian are buggy when verifying.
     + Switch to using a python script verify_combine_sigs to fill in
       the gaps.
+  * In preinst, try to verify that the signed shim we're trying to
+    install will actually boot on this system - let's not break
+    systems on upgrade.
 
- -- Steve McIntyre <93sam@debian.org>  Wed, 06 May 2026 23:54:12 +0100
+ -- Steve McIntyre <93sam@debian.org>  Sun, 17 May 2026 22:47:06 +0100
 
 shim-signed (1.47) unstable; urgency=medium
 
