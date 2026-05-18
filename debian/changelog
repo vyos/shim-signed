@@ -1,4 +1,4 @@
-shim-signed (1.48) UNRELEASED; urgency=medium
+shim-signed (1.48) unstable; urgency=medium
 
   * Add support for verifying and then combining signatures from
     multiple signed shims.
@@ -8,6 +8,9 @@ shim-signed (1.48) UNRELEASED; urgency=medium
   * In preinst, try to verify that the signed shim we're trying to
     install will actually boot on this system - let's not break
     systems on upgrade.
+  * We now include a dual-signed shim including the 2023 CA.
+    Closes: #1112197
+  * The shim included is now NX-capable. Closes: #1064102
 
  -- Steve McIntyre <93sam@debian.org>  Sun, 17 May 2026 22:47:06 +0100
 
