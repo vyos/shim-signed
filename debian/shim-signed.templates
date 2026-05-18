@@ -9,7 +9,7 @@ _Description: No valid UEFI Secure Boot signatures found
  To fix this error, you probably need to update the trusted
  certificates list (DB) on your system. See
  .
- https://wiki.debian.org/SecureBoot/UpdateCA
+ https://wiki.debian.org/SecureBoot/CAChanges
  .
  for more information about how to do this.
 
@@ -24,6 +24,6 @@ _Description: Shim signed with a revoked key
  To fix this error, you probably need to update the trusted
  certificates revocation list (DBX) on your system. See
  .
- https://wiki.debian.org/SecureBoot/UpdateCA
+ https://wiki.debian.org/SecureBoot/CAChanges
  .
  for more information about how to do this.
