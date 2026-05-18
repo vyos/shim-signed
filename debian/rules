@@ -31,6 +31,10 @@ endif
 	debian/generate_preinst
 	dh_installdeb
 
+override_dh_clean:
+	rm -f debian/shim-signed.preinst
+	dh_clean
+
 override_dh_gencontrol:
 	dh_gencontrol -- -v$(VERSION)+$(SHIM_VERSION) \
 		-Vshim:Version=$(SHIM_VERSION) \

@@ -1,3 +1,9 @@
+shim-signed (1.49) UNRELEASED; urgency=medium
+
+  * Make sure we remove shim-signed.preinst during clean
+
+ -- Steve McIntyre <93sam@debian.org>  Mon, 18 May 2026 14:10:06 +0100
+
 shim-signed (1.48) unstable; urgency=medium
 
   * Add support for verifying and then combining signatures from
