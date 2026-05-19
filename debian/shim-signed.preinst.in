@@ -50,18 +50,27 @@ case "$type" in
             SB_BOOT_ERROR=$ERR_NONE
         else
             # Check that we can safely boot this shim.
-            SB_STATE=$(mokutil --sb-state 2>&1 || true)
+	    # We don't care if the platform is in setup mode.
+            SB_STATE=$(mokutil --sb-state 2>&1 | grep -v "Platform is in Setup Mode")
             # If SB is not enabled (etc.) then this shim is fine
-            case $SB_STATE in
+	    case "${SB_STATE}" in
                 "SecureBoot disabled"|"This system doesn't support Secure Boot")
-                    echo "  $SB_STATE; shim installation is safe."
-                    SB_BOOT_ERROR=$ERR_NONE
-                    ;;
-                "EFI variables are not supported on this system")
-                    echo "  $SB_STATE; assuming shim installation is safe."
-                    SB_BOOT_ERROR=$ERR_NONE
-                    ;;
-            esac
+		    echo "  ${SB_STATE}; shim installation is safe."
+		    SB_BOOT_ERROR=$ERR_NONE
+		    ;;
+                "EFI variables are not supported on this system"|"Cannot determine secure boot state")
+		    echo "  ${SB_STATE}; assuming shim installation is safe."
+		    SB_BOOT_ERROR=$ERR_NONE
+		    ;;
+		*)
+		    echo "Unexpected output from mokutil:"
+		    echo '"""'
+		    echo "${SB_STATE}"
+		    echo '"""'
+		    echo "Please report this as a bug agsinst shim-signed, including the above information."
+		    exit 1
+		    ;;
+	    esac
         fi
 
         if [ $SB_BOOT_ERROR != $ERR_NONE ]; then

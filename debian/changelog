@@ -1,8 +1,10 @@
-shim-signed (1.49) UNRELEASED; urgency=medium
+shim-signed (1.49) unstable; urgency=medium
 
-  * Make sure we remove shim-signed.preinst during clean
+  * Make mokutil parsing more robust. Closes: #1137063
+    + Cope with "Platform is in Setup Mode" message
+    + If we get any other unexpected output, print what we got for debugging.
 
- -- Steve McIntyre <93sam@debian.org>  Mon, 18 May 2026 14:10:06 +0100
+ -- Steve McIntyre <93sam@debian.org>  Tue, 19 May 2026 09:42:16 +0100
 
 shim-signed (1.48) unstable; urgency=medium
 
